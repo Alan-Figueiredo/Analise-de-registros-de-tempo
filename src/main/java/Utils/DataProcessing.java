@@ -5,28 +5,42 @@ package Utils;
 // Ignorar registro com minutes <= 0
 // Informar quantidade de registros ignorados
 
-
-
-import tools.jackson.databind.JsonNode;
+import Config.PathJson;
+import Model.Task;
+import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
-import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DataProcessing {
 
-    public JsonNode inputData(String path){
 
-        ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private List<Task> listTask = new ArrayList<>();
 
+    public List<Task> inputData(){
         try {
-            JsonNode json = mapper.readTree(Path.of(path));
-            System.out.println(json);
+          listTask = MAPPER.readValue(PathJson.PATH,new TypeReference<List<Task>>(){});
+          return listTask;
         }
         catch (Exception e) {
             System.err.println("Erro ao ler o arquivo: "+ e.getMessage());
+            return List.of();
         }
 
-        return null;
+    }
+
+    public List<Task> clearList() {
+        return listTask.stream()
+                .filter(task -> task.getMinutes() > 0)
+                .toList();
+    }
+
+    public long countIgnoredRecords() {
+        return listTask.stream()
+                .filter(t -> t.getMinutes() <= 0)
+                .count();
     }
 }
