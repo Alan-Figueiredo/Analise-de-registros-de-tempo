@@ -11,7 +11,7 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-copy --from=build /app/target/analise-tempo.jar app.jar
+COPY --from=build /app/target/analise-tempo.jar app.jar
 
 COPY data.json .
 

@@ -13,7 +13,7 @@ public class GenerateJson {
     private final ObjectMapper MAPPER = new ObjectMapper();
     private  final RecordsAnalyzer RA = new RecordsAnalyzer();
 
-    private ResponseDto buildJson(){
+    public ResponseDto buildJson(){
         return new ResponseDto(
                 RA.countTotalMinutes(),
                 RA.groupingByTaskId(),
@@ -29,6 +29,6 @@ public class GenerateJson {
 
         MAPPER.writerWithDefaultPrettyPrinter()
                 .with(printer)
-                .writeValue(new File("result.json"), this.buildJson());
+                .writeValue(new File("result/result.json"), this.buildJson());
     }
 }
