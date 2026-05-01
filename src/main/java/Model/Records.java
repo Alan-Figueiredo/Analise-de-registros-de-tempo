@@ -1,7 +1,7 @@
 package Model;
 
 
-public class Task {
+public class Records {
 
     private Integer userId;
     private String userName;
