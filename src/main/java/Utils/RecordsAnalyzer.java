@@ -1,0 +1,72 @@
+package Utils;
+
+import Dto.GroupRerdsTaskIdDto;
+import Model.Records;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class RecordsAnalyzer {
+
+    public static final DataProcessing DP = new DataProcessing();
+
+
+    public Integer countTotalMinutes() {
+        return this.validRecords().stream()
+                .mapToInt(r -> r.getMinutes()).sum();
+    }
+
+    public List<Records> validRecords() {
+        return DP.getListRecords().stream()
+                .filter(r -> r.getMinutes() != null && r.getMinutes() > 0)
+                .toList();
+    }
+
+    public long countIgnoredRecords() {
+        return DP.getListRecords().stream()
+                .filter(r -> r.getMinutes() == null || r.getMinutes() <= 0)
+                .count();
+    }
+
+    public List<GroupRerdsTaskIdDto> groupingByTaskId() {
+
+        List<Records> cleanList = this.validRecords();
+
+        Map<Integer,List<Records>> groupByTaskId = cleanList.stream()
+                .collect(Collectors.groupingBy(r -> r.getTaskId()));
+
+        List<GroupRerdsTaskIdDto> result = groupByTaskId.entrySet()
+                .stream().map(e-> {
+                    Integer taskId = e.getKey();
+                    List<Records> valueList = e.getValue();
+
+                    int totalMinutes = valueList.stream()
+                            .mapToInt(r-> r.getMinutes()).sum();
+
+                    String taskName = valueList.get(0).getTaskName();
+                    double perc = this.countTotalMinutes() == 0 ? 0 : (totalMinutes * 100.0) / this.countTotalMinutes();
+
+                    return new GroupRerdsTaskIdDto(
+                            taskId,
+                            taskName,
+                            totalMinutes,
+                            String.format(Locale.US,"%.2f%%", perc)
+                    );
+
+                })
+                .toList();
+        return  result;
+    }
+
+    public GroupRerdsTaskIdDto mostWorkedTask(){
+
+        List<GroupRerdsTaskIdDto> listGrouping = groupingByTaskId();
+
+        return listGrouping.stream()
+                .max(Comparator.comparingInt(r -> r.totalMinutes()))
+                .stream().toList().getFirst();
+    }
+}
