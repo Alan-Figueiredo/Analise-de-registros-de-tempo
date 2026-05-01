@@ -1,6 +1,7 @@
 package Utils;
 
-import Dto.GroupRerdsTaskIdDto;
+import Dto.TaskDto;
+import Dto.TaskTopThreeDto;
 import Model.Records;
 
 import java.util.Comparator;
@@ -31,14 +32,14 @@ public class RecordsAnalyzer {
                 .count();
     }
 
-    public List<GroupRerdsTaskIdDto> groupingByTaskId() {
+    public List<TaskDto> groupingByTaskId() {
 
         List<Records> cleanList = this.validRecords();
 
         Map<Integer,List<Records>> groupByTaskId = cleanList.stream()
                 .collect(Collectors.groupingBy(r -> r.getTaskId()));
 
-        List<GroupRerdsTaskIdDto> result = groupByTaskId.entrySet()
+        List<TaskDto> result = groupByTaskId.entrySet()
                 .stream().map(e-> {
                     Integer taskId = e.getKey();
                     List<Records> valueList = e.getValue();
@@ -49,7 +50,7 @@ public class RecordsAnalyzer {
                     String taskName = valueList.get(0).getTaskName();
                     double perc = this.countTotalMinutes() == 0 ? 0 : (totalMinutes * 100.0) / this.countTotalMinutes();
 
-                    return new GroupRerdsTaskIdDto(
+                    return new TaskDto(
                             taskId,
                             taskName,
                             totalMinutes,
@@ -61,12 +62,24 @@ public class RecordsAnalyzer {
         return  result;
     }
 
-    public GroupRerdsTaskIdDto mostWorkedTask(){
+    public TaskDto mostWorkedTask(){
 
-        List<GroupRerdsTaskIdDto> listGrouping = groupingByTaskId();
+        List<TaskDto> listGrouping = groupingByTaskId();
 
         return listGrouping.stream()
                 .max(Comparator.comparingInt(r -> r.totalMinutes()))
                 .stream().toList().getFirst();
+    }
+
+    public List<TaskTopThreeDto> topThreeRecords(){
+
+        List<TaskDto> cleanList = this.groupingByTaskId();
+
+        return cleanList.stream()
+                .sorted(Comparator.comparingInt((TaskDto r)-> r.totalMinutes()).reversed())
+                .limit(3)
+                .map(t -> new TaskTopThreeDto(t.taskId(),t.taskName(),t.percentage()))
+                .toList();
+
     }
 }

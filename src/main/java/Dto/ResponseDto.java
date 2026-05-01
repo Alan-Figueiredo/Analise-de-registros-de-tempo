@@ -1,16 +1,16 @@
 package Dto;
 
-import Model.Records;
-
 import java.util.List;
 
 public record ResponseDto(
         Integer totalMinutes,
-        List<GroupRerdsTaskIdDto> tasks,
-        GroupRerdsTaskIdDto mostWorkedTask,
+        List<TaskDto> tasks,
+        TaskDto mostWorkedTask,
+        List<TaskTopThreeDto> top3TasksPercentage,
+
+
         long ignoredRecords
 ) {}
 
-//- top3TasksPercentage
 //- top3Employees
 //- mostDistinctUserOnTasks
