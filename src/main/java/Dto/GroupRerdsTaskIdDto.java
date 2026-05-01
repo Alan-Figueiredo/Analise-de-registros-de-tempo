@@ -1,6 +1,6 @@
 package Dto;
 
-public record GroupingRecordsTaskIdDto(
+public record GroupRerdsTaskIdDto(
        Integer taskId,
        String taskName,
        Integer totalMinutes,

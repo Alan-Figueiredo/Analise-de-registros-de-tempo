@@ -1,0 +1,72 @@
+{
+  "totalMinutes" : 28408,
+  "tasks" : [
+    {
+      "taskId" : 101,
+      "taskName" : "Corrigir bug login",
+      "totalMinutes" : 2088,
+      "percentage" : "7.35%"
+    },
+    {
+      "taskId" : 102,
+      "taskName" : "Criar tela dashboard",
+      "totalMinutes" : 2713,
+      "percentage" : "9.55%"
+    },
+    {
+      "taskId" : 103,
+      "taskName" : "Ajustar layout",
+      "totalMinutes" : 4047,
+      "percentage" : "14.25%"
+    },
+    {
+      "taskId" : 104,
+      "taskName" : "Documentar API",
+      "totalMinutes" : 2728,
+      "percentage" : "9.60%"
+    },
+    {
+      "taskId" : 105,
+      "taskName" : "Refatorar autenticação",
+      "totalMinutes" : 2804,
+      "percentage" : "9.87%"
+    },
+    {
+      "taskId" : 106,
+      "taskName" : "Criar testes unitários",
+      "totalMinutes" : 3050,
+      "percentage" : "10.74%"
+    },
+    {
+      "taskId" : 107,
+      "taskName" : "Implementar cache",
+      "totalMinutes" : 2474,
+      "percentage" : "8.71%"
+    },
+    {
+      "taskId" : 108,
+      "taskName" : "Melhorar queries",
+      "totalMinutes" : 3041,
+      "percentage" : "10.70%"
+    },
+    {
+      "taskId" : 109,
+      "taskName" : "Ajustar responsividade",
+      "totalMinutes" : 1963,
+      "percentage" : "6.91%"
+    },
+    {
+      "taskId" : 110,
+      "taskName" : "Criar endpoint relatório",
+      "totalMinutes" : 3500,
+      "percentage" : "12.32%"
+    }
+  ],
+  "mostWorkedTask" : {
+    "taskId" : 103,
+    "taskName" : "Ajustar layout",
+    "totalMinutes" : 4047,
+    "percentage" : "14.25%"
+  },
+  "ignoredRecords" : 41
+}
