@@ -18,6 +18,7 @@ public class GenerateJson {
                 RA.countTotalMinutes(),
                 RA.groupingByTaskId(),
                 RA.mostWorkedTask(),
+                RA.topThreeRecords(),
                 RA.countIgnoredRecords()
         );
     }
