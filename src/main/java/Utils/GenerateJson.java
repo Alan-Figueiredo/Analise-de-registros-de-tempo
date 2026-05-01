@@ -29,6 +29,6 @@ public class GenerateJson {
 
         MAPPER.writerWithDefaultPrettyPrinter()
                 .with(printer)
-                .writeValue(new File("result/result.json"), this.buildJson());
+                .writeValue(new File("output/result.json"), this.buildJson());
     }
 }

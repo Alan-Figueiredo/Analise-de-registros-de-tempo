@@ -3,4 +3,5 @@ services:
     build: .
     container_name: analise-tempo
     volumes:
-      - ./result:/app/result
+      - ./output:/app/output
+
