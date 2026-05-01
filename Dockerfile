@@ -11,8 +11,8 @@ FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-copy --from=build /app/target/*.jar app.jar
+copy --from=build /app/target/analise-tempo.jar app.jar
 
-EXPOSE 8080
+COPY data.json .
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
