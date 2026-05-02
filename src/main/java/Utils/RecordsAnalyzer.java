@@ -105,11 +105,31 @@ public class RecordsAnalyzer {
 
     }
 
-    public List<EmployeeMostDistinctTask> distinctTasks (){
-        List<Records> teste = CLEANlIST;
-        System.out.println(teste);
+    public EmployeeMostDistinctTask mostDistinctTasks (){
 
-        return List.of();
+        Map<Integer,List<Records>> groups = CLEANlIST.stream()
+                        .collect(Collectors.groupingBy(r->r.getUserId()));
+
+        EmployeeMostDistinctTask ListDistinct = groups.entrySet().stream()
+                .map(entry -> {
+
+                    Integer userId = entry.getKey();
+                    List<Records> records = entry.getValue();
+                    String userName = records.get(0).getUserName();
+
+                    List<Integer> taskIds = records.stream()
+                            .map(r -> r.getTaskId()).distinct()
+                            .toList();
+                    Integer total = taskIds.size();
+
+                    return new EmployeeMostDistinctTask(userId,userName,total,taskIds);
+                }).sorted(
+                        Comparator
+                                .comparing((EmployeeMostDistinctTask t) -> t.distinctTasks()).reversed()
+                                .thenComparing((EmployeeMostDistinctTask t) -> t.userId())
+                )
+                .toList().getFirst();
+        return ListDistinct;
     }
 
 }

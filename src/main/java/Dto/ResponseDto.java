@@ -7,9 +7,7 @@ public record ResponseDto(
         List<TaskDto> tasks,
         TaskDto mostWorkedTask,
         List<TaskTopThreeDto> top3TasksPercentage,
-        List<EmployessTopThreeDto>top3Employees,
-
+        List<EmployessTopThreeDto> top3Employees,
+        EmployeeMostDistinctTask mostDistinctUserOnTasks,
         long ignoredRecords
 ) {}
-
-//- mostDistinctUserOnTasks
