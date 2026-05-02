@@ -19,6 +19,7 @@ public class GenerateJson {
                 RA.groupingByTaskId(),
                 RA.mostWorkedTask(),
                 RA.topThreeRecords(),
+                RA.topThreeEmployess(),
                 RA.countIgnoredRecords()
         );
     }
@@ -30,6 +31,6 @@ public class GenerateJson {
 
         MAPPER.writerWithDefaultPrettyPrinter()
                 .with(printer)
-                .writeValue(new File("output/result.json"), this.buildJson());
+                .writeValue(new File("result.json"), this.buildJson());
     }
 }

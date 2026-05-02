@@ -2,6 +2,5 @@ services:
   app:
     build: .
     container_name: analise-tempo
-    volumes:
-      - ./output:/app/output
+
 
