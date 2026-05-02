@@ -6,6 +6,6 @@ public record EmployeeMostDistinctTask(
         Integer userId,
         String userName,
         Integer distinctTasks,
-        List<TaskDto> taskIds
+        List<Integer> taskIds
 ) {
 }

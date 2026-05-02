@@ -59,7 +59,9 @@ public class RecordsAnalyzer {
                     );
 
                 })
-                .toList();
+                .sorted(Comparator
+                        .comparing((TaskDto t) -> t.totalMinutes()).reversed()
+                        .thenComparing((TaskDto t) -> t.taskId())).toList();
         return  result;
     }
 
@@ -99,17 +101,40 @@ public class RecordsAnalyzer {
                             totalMinutes
                     );
                 })
-                .sorted(Comparator.comparingInt((EmployessTopThreeDto r)->r.totalMinutes())
-                        .reversed()).limit(3).toList();
+                .sorted(Comparator.comparing((EmployessTopThreeDto r)->r.totalMinutes())
+                        .reversed().thenComparing((EmployessTopThreeDto r)->r.userId()))
+                .limit(3).toList();
         return  result;
 
     }
 
-    public List<EmployeeMostDistinctTask> distinctTasks (){
-        List<Records> teste = CLEANlIST;
-        System.out.println(teste);
+    public EmployeeMostDistinctTask mostDistinctTasks (){
 
-        return List.of();
+        Map<Integer,List<Records>> groups = CLEANlIST.stream()
+                        .collect(Collectors.groupingBy(r->r.getUserId()));
+
+        EmployeeMostDistinctTask ListDistinct = groups.entrySet().stream()
+                .map(entry -> {
+
+                    Integer userId = entry.getKey();
+                    List<Records> records = entry.getValue();
+                    String userName = records.get(0).getUserName();
+
+                    List<Integer> taskIds = records.stream()
+                            .map(r -> r.getTaskId()).distinct()
+                            .sorted()
+                            .toList();
+
+                    Integer total = taskIds.size();
+
+                    return new EmployeeMostDistinctTask(userId,userName,total,taskIds);
+                }).sorted(
+                        Comparator
+                                .comparing((EmployeeMostDistinctTask t) -> t.distinctTasks()).reversed()
+                                .thenComparing((EmployeeMostDistinctTask t) -> t.userId())
+                )
+                .toList().getFirst();
+        return ListDistinct;
     }
 
 }

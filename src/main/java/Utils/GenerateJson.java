@@ -20,6 +20,7 @@ public class GenerateJson {
                 RA.mostWorkedTask(),
                 RA.topThreeRecords(),
                 RA.topThreeEmployess(),
+                RA.mostDistinctTasks(),
                 RA.countIgnoredRecords()
         );
     }
