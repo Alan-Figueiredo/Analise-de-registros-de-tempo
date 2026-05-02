@@ -59,7 +59,9 @@ public class RecordsAnalyzer {
                     );
 
                 })
-                .toList();
+                .sorted(Comparator
+                        .comparing((TaskDto t) -> t.totalMinutes()).reversed()
+                        .thenComparing((TaskDto t) -> t.taskId())).toList();
         return  result;
     }
 
@@ -99,8 +101,9 @@ public class RecordsAnalyzer {
                             totalMinutes
                     );
                 })
-                .sorted(Comparator.comparingInt((EmployessTopThreeDto r)->r.totalMinutes())
-                        .reversed()).limit(3).toList();
+                .sorted(Comparator.comparing((EmployessTopThreeDto r)->r.totalMinutes())
+                        .reversed().thenComparing((EmployessTopThreeDto r)->r.userId()))
+                .limit(3).toList();
         return  result;
 
     }
@@ -119,7 +122,9 @@ public class RecordsAnalyzer {
 
                     List<Integer> taskIds = records.stream()
                             .map(r -> r.getTaskId()).distinct()
+                            .sorted()
                             .toList();
+
                     Integer total = taskIds.size();
 
                     return new EmployeeMostDistinctTask(userId,userName,total,taskIds);
