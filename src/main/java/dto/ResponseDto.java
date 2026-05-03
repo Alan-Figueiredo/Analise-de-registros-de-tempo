@@ -9,5 +9,5 @@ public record ResponseDto(
         List<TaskTopThreeDto> top3TasksPercentage,
         List<EmployeesTopThreeDto> top3Employees,
         EmployeeMostDistinctTask mostDistinctUserOnTasks,
-        long ignoredRecords
+        Long ignoredRecords
 ) {}
