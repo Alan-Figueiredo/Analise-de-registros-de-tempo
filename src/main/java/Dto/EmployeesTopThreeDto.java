@@ -1,6 +1,6 @@
 package Dto;
 
-public record EmployessTopThreeDto(
+public record EmployeesTopThreeDto(
         Integer userId,
         String userName,
         Integer totalMinutes

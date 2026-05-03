@@ -1,10 +1,5 @@
 package Utils;
 
-// 2.1
-// Processar os dados
-// Ignorar registro com minutes <= 0
-// Informar quantidade de registros ignorados
-
 import Config.PathJson;
 import Model.Records;
 import tools.jackson.core.type.TypeReference;
