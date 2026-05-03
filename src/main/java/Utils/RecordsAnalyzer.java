@@ -1,7 +1,7 @@
 package Utils;
 
 import Dto.EmployeeMostDistinctTask;
-import Dto.EmployessTopThreeDto;
+import Dto.EmployeesTopThreeDto;
 import Dto.TaskDto;
 import Dto.TaskTopThreeDto;
 import Model.Records;
@@ -38,6 +38,7 @@ public class RecordsAnalyzer {
 
     public List<TaskDto> groupingByTaskId() {
 
+        int totalMinutesAll = this.countTotalMinutes();
         Map<Integer,List<Records>> groupByTaskId = CLEANlIST.stream()
                 .collect(Collectors.groupingBy(r -> r.getTaskId()));
         List<TaskDto> result = groupByTaskId.entrySet()
@@ -49,7 +50,7 @@ public class RecordsAnalyzer {
                             .mapToInt(r-> r.getMinutes()).sum();
 
                     String taskName = valueList.get(0).getTaskName();
-                    double perc = this.countTotalMinutes() == 0 ? 0 : (totalMinutes * 100.0) / this.countTotalMinutes();
+                    double perc = totalMinutesAll == 0 ? 0 : (totalMinutes * 100.0) / totalMinutesAll;
 
                     return new TaskDto(
                             taskId,
@@ -66,25 +67,22 @@ public class RecordsAnalyzer {
     }
 
     public TaskDto mostWorkedTask(){
-        return LISTGROUPING.stream()
-                .max(Comparator.comparingInt(r -> r.totalMinutes()))
-                .stream().toList().getFirst();
+        return LISTGROUPING.getFirst();
     }
 
     public List<TaskTopThreeDto> topThreeRecords(){
         return LISTGROUPING.stream()
-                .sorted(Comparator.comparingInt((TaskDto r)-> r.totalMinutes()).reversed())
                 .limit(3)
                 .map(t -> new TaskTopThreeDto(t.taskId(),t.taskName(),t.percentage()))
                 .toList();
 
     }
 
-    public List<EmployessTopThreeDto> topThreeEmployess(){
+    public List<EmployeesTopThreeDto> topThreeEmployess(){
 
         Map<Integer,List<Records>> groupByTaskId = CLEANlIST.stream()
                 .collect(Collectors.groupingBy(r -> r.getUserId()));
-        List<EmployessTopThreeDto> result = groupByTaskId.entrySet()
+        List<EmployeesTopThreeDto> result = groupByTaskId.entrySet()
                 .stream().map(e-> {
 
                     Integer userId = Integer.valueOf(e.getKey());
@@ -95,14 +93,14 @@ public class RecordsAnalyzer {
 
                     String UserName = valueList.get(0).getUserName();
 
-                    return new EmployessTopThreeDto(
+                    return new EmployeesTopThreeDto(
                             userId,
                             UserName,
                             totalMinutes
                     );
                 })
-                .sorted(Comparator.comparing((EmployessTopThreeDto r)->r.totalMinutes())
-                        .reversed().thenComparing((EmployessTopThreeDto r)->r.userId()))
+                .sorted(Comparator.comparing((EmployeesTopThreeDto r)->r.totalMinutes())
+                        .reversed().thenComparing((EmployeesTopThreeDto r)->r.userId()))
                 .limit(3).toList();
         return  result;
 
