@@ -2,8 +2,8 @@ package config;
 
 import java.io.File;
 
-public final class PathJson {
+public interface PathJson {
 
-    public static final File PATH = new File("data.json");
-
+     File getJson();
+     File writeJson();
 }

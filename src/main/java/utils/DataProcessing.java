@@ -1,17 +1,21 @@
 package utils;
 
+
+
 import config.PathJson;
 import model.Record;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
+
+import java.io.File;
 import java.util.*;
 
 
+public class DataProcessing implements PathJson {
 
-public class DataProcessing {
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
     private List<Record> records;
+    private List<Record> unmodifiableRecords;
 
     public DataProcessing() {
         inputData();
@@ -20,10 +24,12 @@ public class DataProcessing {
     public void inputData(){
         try {
 
-            if (!PathJson.PATH.exists()) {
+            if (!getJson().exists()) {
                 throw new RuntimeException("Arquivo data.json não encontrado");
             }
-            records = MAPPER.readValue(PathJson.PATH,new TypeReference<List<Record>>(){});
+            records = mapper.readValue(getJson(),new TypeReference<List<Record>>(){});
+            unmodifiableRecords = Collections.unmodifiableList(records);
+
         }
         catch (Exception e) {
             System.err.println("Erro ao ler o arquivo: "+ e.getMessage());
@@ -31,7 +37,18 @@ public class DataProcessing {
     }
 
     public List<Record> getRecords() {
-        return records;
+        return unmodifiableRecords;
+    }
+
+
+    @Override
+    public File getJson() {
+        return new File("data.json");
+    }
+
+    @Override
+    public File writeJson() {
+        return null;
     }
 }
 
