@@ -1,17 +1,19 @@
 package utils;
 
+import config.DataSource;
 import dto.ResponseDto;
-import tools.jackson.core.util.DefaultIndenter;
-import tools.jackson.core.util.DefaultPrettyPrinter;
-import tools.jackson.databind.ObjectMapper;
 
-
-import java.io.File;
 
 public class GenerateJson {
 
-    private final ObjectMapper mapper = new ObjectMapper();
-    private  final RecordsAnalyzer analyzer = new RecordsAnalyzer();
+
+    private final RecordsAnalyzer analyzer;
+    private final DataSource dataSource;
+
+    public GenerateJson(RecordsAnalyzer analyzer, DataSource dataSource) {
+        this.analyzer = analyzer;
+        this.dataSource = dataSource;
+    }
 
     private ResponseDto buildJson(){
         return new ResponseDto(
@@ -25,13 +27,8 @@ public class GenerateJson {
         );
     }
 
-    public void generateJsonResult() {
-
-        DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
-        printer.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
-
-        mapper.writerWithDefaultPrettyPrinter()
-                .with(printer)
-                .writeValue(new File("result.json"), this.buildJson());
+    public void exportJson(){
+        ResponseDto responseDto = buildJson();
+        dataSource.save(responseDto);
     }
 }

@@ -1,7 +1,7 @@
 package model;
 
 
-public class Record {
+public class Taskrecord {
 
     private Integer userId;
     private String userName;
