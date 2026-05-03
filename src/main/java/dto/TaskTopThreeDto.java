@@ -1,4 +1,4 @@
-package Dto;
+package dto;
 
 public record TaskTopThreeDto(
         Integer taskId,

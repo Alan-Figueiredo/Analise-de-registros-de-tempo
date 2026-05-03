@@ -1,6 +1,6 @@
-package Utils;
+package utils;
 
-import Dto.ResponseDto;
+import dto.ResponseDto;
 import tools.jackson.core.util.DefaultIndenter;
 import tools.jackson.core.util.DefaultPrettyPrinter;
 import tools.jackson.databind.ObjectMapper;

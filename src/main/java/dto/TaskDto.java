@@ -1,4 +1,4 @@
-package Dto;
+package dto;
 
 public record TaskDto(
        Integer taskId,

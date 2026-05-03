@@ -1,7 +1,7 @@
-package Utils;
+package utils;
 
-import Config.PathJson;
-import Model.Records;
+import config.PathJson;
+import model.Records;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 import java.util.*;

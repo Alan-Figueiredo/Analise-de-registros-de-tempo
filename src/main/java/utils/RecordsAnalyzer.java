@@ -1,10 +1,10 @@
-package Utils;
+package utils;
 
-import Dto.EmployeeMostDistinctTask;
-import Dto.EmployeesTopThreeDto;
-import Dto.TaskDto;
-import Dto.TaskTopThreeDto;
-import Model.Records;
+import dto.EmployeeMostDistinctTask;
+import dto.EmployeesTopThreeDto;
+import dto.TaskDto;
+import dto.TaskTopThreeDto;
+import model.Records;
 
 import java.util.Comparator;
 import java.util.List;
