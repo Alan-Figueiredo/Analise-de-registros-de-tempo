@@ -1,7 +1,7 @@
 package model;
 
 
-public class Records {
+public class Record {
 
     private Integer userId;
     private String userName;
