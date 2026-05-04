@@ -1,6 +1,10 @@
 # Desafio de Seleção - Análise de Registros de Tempo
 
-Aplicação em Java 21 desenvolvida para processar registros de timesheet (horas trabalhadas) a partir de um arquivo JSON. O projeto é totalmente conteinerizado, garantindo uma execução determinística e sem dependências locais além do Docker.
+Aplicação desenvolvida para processar registros de horas trabalhadas
+a partir de um arquivo JSON.<br>
+E processar os registros
+salvando um resumo analítico em JSON  
+O projeto é totalmente conteinerizado, garantindo uma saida determinística e sem dependências locais além do Docker.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -35,4 +39,6 @@ A aplicação foi projetada para ser executada com um único comando, sem a nece
    Dockerfile
    README.md
    result.json <<
-   
+4. Caso prefira copiar o arquivo de dentro do container para a pasta local, basta utilizar o comando abaixo:
+   ```bash
+   docker cp analise-tempo:/result.json .
