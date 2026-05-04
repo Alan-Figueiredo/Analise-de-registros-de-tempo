@@ -1,37 +1,34 @@
 package utils;
 
+import config.DataSource;
 import dto.ResponseDto;
-import tools.jackson.core.util.DefaultIndenter;
-import tools.jackson.core.util.DefaultPrettyPrinter;
-import tools.jackson.databind.ObjectMapper;
 
-
-import java.io.File;
 
 public class GenerateJson {
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
-    private  final RecordsAnalyzer RA = new RecordsAnalyzer();
+
+    private final RecordsAnalyzer analyzer;
+    private final DataSource adapter;
+
+    public GenerateJson(RecordsAnalyzer analyzer, DataSource adapter) {
+        this.analyzer = analyzer;
+        this.adapter = adapter;
+    }
 
     private ResponseDto buildJson(){
         return new ResponseDto(
-                RA.countTotalMinutes(),
-                RA.groupingByTaskId(),
-                RA.mostWorkedTask(),
-                RA.topThreeRecords(),
-                RA.topThreeEmployess(),
-                RA.mostDistinctTasks(),
-                RA.countIgnoredRecords()
+                analyzer.countTotalMinutes(),
+                analyzer.groupingByTaskId(),
+                analyzer.mostWorkedTask(),
+                analyzer.topThreeRecords(),
+                analyzer.topThreeEmployess(),
+                analyzer.mostDistinctTasks(),
+                analyzer.countIgnoredRecords()
         );
     }
 
-    public void generateJsonResult() {
-
-        DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
-        printer.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
-
-        MAPPER.writerWithDefaultPrettyPrinter()
-                .with(printer)
-                .writeValue(new File("result.json"), this.buildJson());
+    public void exportJson(){
+        ResponseDto responseDto = buildJson();
+        adapter.save(responseDto);
     }
 }

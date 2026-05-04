@@ -4,7 +4,7 @@ import dto.EmployeeMostDistinctTask;
 import dto.EmployeesTopThreeDto;
 import dto.TaskDto;
 import dto.TaskTopThreeDto;
-import model.Record;
+import model.Taskrecord;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,24 +14,29 @@ import java.util.stream.Collectors;
 
 public class RecordsAnalyzer {
 
-    public static final DataProcessing DP = new DataProcessing();
-    public final List<Record> CLEANlIST = this.validRecords();
-    public final List<TaskDto> LISTGROUPING = this.groupingByTaskId();
+    public final DataProcessing dataProcessing;
+    public final List<Taskrecord> cleanList;
+    public final List<TaskDto> listGrouping;
 
+    public RecordsAnalyzer(DataProcessing dataProcessing) {
+        this.dataProcessing = dataProcessing;
+        this.cleanList = this.validRecords();
+        this.listGrouping = this.groupingByTaskId();
+    }
 
     public Integer countTotalMinutes() {
         return this.validRecords().stream()
                 .mapToInt(r -> r.getMinutes()).sum();
     }
 
-    public List<Record> validRecords() {
-        return DP.getRecords().stream()
+    public List<Taskrecord> validRecords() {
+        return dataProcessing.getRecords().stream()
                 .filter(r -> r.getMinutes() != null && r.getMinutes() > 0)
                 .toList();
     }
 
     public long countIgnoredRecords() {
-        return DP.getRecords().stream()
+        return dataProcessing.getRecords().stream()
                 .filter(r -> r.getMinutes() == null || r.getMinutes() <= 0)
                 .count();
     }
@@ -39,12 +44,12 @@ public class RecordsAnalyzer {
     public List<TaskDto> groupingByTaskId() {
 
         int totalMinutesAll = this.countTotalMinutes();
-        Map<Integer,List<Record>> groupByTaskId = CLEANlIST.stream()
+        Map<Integer,List<Taskrecord>> groupByTaskId = cleanList.stream()
                 .collect(Collectors.groupingBy(r -> r.getTaskId()));
         List<TaskDto> result = groupByTaskId.entrySet()
                 .stream().map(e-> {
                     Integer taskId = e.getKey();
-                    List<Record> valueList = e.getValue();
+                    List<Taskrecord> valueList = e.getValue();
 
                     int totalMinutes = valueList.stream()
                             .mapToInt(r-> r.getMinutes()).sum();
@@ -67,11 +72,11 @@ public class RecordsAnalyzer {
     }
 
     public TaskDto mostWorkedTask(){
-        return LISTGROUPING.getFirst();
+        return listGrouping.getFirst();
     }
 
     public List<TaskTopThreeDto> topThreeRecords(){
-        return LISTGROUPING.stream()
+        return listGrouping.stream()
                 .limit(3)
                 .map(t -> new TaskTopThreeDto(t.taskId(),t.taskName(),t.percentage()))
                 .toList();
@@ -80,13 +85,13 @@ public class RecordsAnalyzer {
 
     public List<EmployeesTopThreeDto> topThreeEmployess(){
 
-        Map<Integer,List<Record>> groupByTaskId = CLEANlIST.stream()
+        Map<Integer,List<Taskrecord>> groupByTaskId = cleanList.stream()
                 .collect(Collectors.groupingBy(r -> r.getUserId()));
         List<EmployeesTopThreeDto> result = groupByTaskId.entrySet()
                 .stream().map(e-> {
 
                     Integer userId = Integer.valueOf(e.getKey());
-                    List<Record> valueList = e.getValue();
+                    List<Taskrecord> valueList = e.getValue();
 
                     int totalMinutes = valueList.stream()
                             .mapToInt(r-> r.getMinutes()).sum();
@@ -108,17 +113,17 @@ public class RecordsAnalyzer {
 
     public EmployeeMostDistinctTask mostDistinctTasks (){
 
-        Map<Integer,List<Record>> groups = CLEANlIST.stream()
+        Map<Integer,List<Taskrecord>> groups = cleanList.stream()
                         .collect(Collectors.groupingBy(r->r.getUserId()));
 
         EmployeeMostDistinctTask ListDistinct = groups.entrySet().stream()
                 .map(entry -> {
 
                     Integer userId = entry.getKey();
-                    List<Record> records = entry.getValue();
-                    String userName = records.get(0).getUserName();
+                    List<Taskrecord> taskrecords = entry.getValue();
+                    String userName = taskrecords.get(0).getUserName();
 
-                    List<Integer> taskIds = records.stream()
+                    List<Integer> taskIds = taskrecords.stream()
                             .map(r -> r.getTaskId()).distinct()
                             .sorted()
                             .toList();
@@ -131,7 +136,7 @@ public class RecordsAnalyzer {
                                 .comparing((EmployeeMostDistinctTask t) -> t.distinctTasks()).reversed()
                                 .thenComparing((EmployeeMostDistinctTask t) -> t.userId())
                 )
-                .toList().getFirst();
+                .findFirst().orElse(null);
         return ListDistinct;
     }
 
