@@ -8,11 +8,11 @@ public class GenerateJson {
 
 
     private final RecordsAnalyzer analyzer;
-    private final DataSource dataSource;
+    private final DataSource adapter;
 
-    public GenerateJson(RecordsAnalyzer analyzer, DataSource dataSource) {
+    public GenerateJson(RecordsAnalyzer analyzer, DataSource adapter) {
         this.analyzer = analyzer;
-        this.dataSource = dataSource;
+        this.adapter = adapter;
     }
 
     private ResponseDto buildJson(){
@@ -29,6 +29,6 @@ public class GenerateJson {
 
     public void exportJson(){
         ResponseDto responseDto = buildJson();
-        dataSource.save(responseDto);
+        adapter.save(responseDto);
     }
 }

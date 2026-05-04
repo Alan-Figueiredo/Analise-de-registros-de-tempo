@@ -11,7 +11,13 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
+
+
 COPY --from=build /app/target/analise-tempo.jar /app-exec.jar
 
 
-ENTRYPOINT ["java", "-jar", "/app-exec.jar"]
+COPY copy_app_root_container.sh /copy_app_root_container.sh
+
+RUN chmod +x /copy_app_root_container.sh
+
+ENTRYPOINT ["/copy_app_root_container.sh"]
