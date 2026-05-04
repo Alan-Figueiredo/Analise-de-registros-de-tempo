@@ -15,6 +15,6 @@ WORKDIR /app
 
 COPY --from=build /app/target/analise-tempo.jar /app-exec.jar
 COPY script_copy.sh /script_copy.sh
-RUN chmod +x /script_copy.sh
+RUN sed -i 's/\r//' /script_copy.sh && chmod +x /script_copy.sh
 
 ENTRYPOINT ["/script_copy.sh"]
