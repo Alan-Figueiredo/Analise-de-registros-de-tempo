@@ -136,7 +136,7 @@ public class RecordsAnalyzer {
                                 .comparing((EmployeeMostDistinctTask t) -> t.distinctTasks()).reversed()
                                 .thenComparing((EmployeeMostDistinctTask t) -> t.userId())
                 )
-                .findFirst().orElse(null);
+                .toList().getFirst();
         return ListDistinct;
     }
 
